@@ -1,6 +1,9 @@
 import { hash } from "crypto";
 import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { prisma } from "@/lib/prisma";
+import { compare } from "bcrypt";
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -17,26 +20,38 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
+        console.log("Username:", credentials.username); // Debug line
+        console.log("Password:", credentials.password); // Debug lin
         const { username, password } = credentials;
         try {
-          const response = await fetch(
-            `${process.env.NEXTAUTH_URL}/api/user/auth`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ username, password }),
+          try {
+            const user = await prisma.user.findUnique({
+              where: { username: username },
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                password: true,
+              },
+            });
+
+            if (!user) {
+              return res.status(404).json({ message: "User not found" });
             }
-          );
 
-          if (!response.ok) {
-            throw new Error("Invalid credentials");
-          }
+            const isPasswordValid = await compare(password, user.password);
+            if (!isPasswordValid) {
+              return res.status(401).json({ message: "Invalid password" });
+            }
 
-          const user = await response.json();
-          if (user && user.id) {
-            return user;
-          } else {
-            return null;
+            return {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+            };
+          } catch (error) {
+            console.error("Error in login handler:", error);
+            return res.status(500).json({ message: "Internal server error" });
           }
         } catch (error) {
           console.error("Error in authorize function:", error);
@@ -51,20 +66,7 @@ export const authOptions = {
   session: {
     strategy: "jwt",
   },
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-        token.name = user.name;
-        token.email = user.email;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      session.user = token;
-      return session;
-    },
-  },
+
   secret: process.env.NEXTAUTH_SECRET,
 };
 

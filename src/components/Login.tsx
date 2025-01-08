@@ -1,4 +1,6 @@
 "use client";
+import { sign } from "crypto";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 
@@ -8,34 +10,32 @@ const Login = () => {
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {
       username: formData.get("username"),
       password: formData.get("password"),
     };
-
+    console.log(data);
     try {
       setLoading(true);
       setError(null);
 
-      const response = await fetch("/api/user/auth", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+      const signinData = await signIn("credentials", {
+        username: data.username,
+        password: data.password,
+        redirect: false,
       });
 
-      if (!response.ok) {
-        const resData = await response.json();
-        setError(resData.error || "Invalid login credentials.");
-        return;
+      console.log(signinData);
+      if (signinData?.error) {
+        setError(signinData.error);
+        alert("Login wrong!" + signinData.error);
+      } else {
+        router.push("/");
+        router.refresh();
+        alert("Login successful!");
       }
-
-      const resData = await response.json();
-      alert("Login successful!");
-
-      router.push("/");
     } catch (err) {
       console.error("Error during login:", err);
       setError("An error occurred. Please try again.");
@@ -49,6 +49,7 @@ const Login = () => {
       <form
         className="bg-white w-[30%] h-[70%] flex flex-col justify-center items-center gap-3 text-bold rounded-xl"
         onSubmit={handleSubmit}
+        method="POST"
       >
         <h1 className="mt-4 font-extrabold">Login</h1>
         <div className="flex flex-col justify-center gap-2">
