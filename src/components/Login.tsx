@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 
-const Register = () => {
+const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -10,9 +10,7 @@ const Register = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     const formData = new FormData(e.currentTarget);
     const data = {
-      name: formData.get("name"),
       username: formData.get("username"),
-      email: formData.get("email"),
       password: formData.get("password"),
     };
 
@@ -20,7 +18,7 @@ const Register = () => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch("/api/user/createUser", {
+      const response = await fetch("/api/user/auth", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,19 +28,18 @@ const Register = () => {
 
       if (!response.ok) {
         const resData = await response.json();
-        setError(resData.message || "Something went wrong.");
+        setError(resData.error || "Invalid login credentials.");
         return;
       }
 
       const resData = await response.json();
-      alert("User registered successfully: " + resData.message);
+      alert("Login successful!");
 
-      e.currentTarget?.reset();
+      router.push("/");
     } catch (err) {
-      console.error("Error submitting form:", err);
+      console.error("Error during login:", err);
       setError("An error occurred. Please try again.");
     } finally {
-      router.push("/login");
       setLoading(false);
     }
   };
@@ -50,21 +47,11 @@ const Register = () => {
   return (
     <div className="bg-black flex justify-center items-center w-full h-screen">
       <form
-        className="bg-white w-[30%] h-[70%] flex flex-col justify-between items-center gap-3 text-bold rounded-xl"
+        className="bg-white w-[30%] h-[70%] flex flex-col justify-center items-center gap-3 text-bold rounded-xl"
         onSubmit={handleSubmit}
       >
-        <h1 className="mt-4 font-extrabold">Register</h1>
-        <div>
-          <div className="flex flex-col gap-2 items-center">
-            <label htmlFor="">Name</label>{" "}
-            <input
-              className="border-2 border-black rounded-xl text-center"
-              type="text"
-              name="name"
-              id=""
-              placeholder="name"
-            />
-          </div>
+        <h1 className="mt-4 font-extrabold">Login</h1>
+        <div className="flex flex-col justify-center gap-2">
           <div className="flex flex-col gap-2 items-center">
             <label htmlFor="">Username</label>{" "}
             <input
@@ -73,16 +60,6 @@ const Register = () => {
               name="username"
               id=""
               placeholder="username"
-            />
-          </div>
-          <div className="flex flex-col gap-2 items-center">
-            <label htmlFor="">Email</label>{" "}
-            <input
-              className="border-2 border-black rounded-xl text-center"
-              type="text"
-              name="email"
-              id=""
-              placeholder="email"
             />
           </div>
           <div className="flex flex-col gap-2 items-center">
@@ -96,7 +73,7 @@ const Register = () => {
             />
           </div>
           <button type="submit" className="p-2 rounded-xl bg-blue-300 mb-4">
-            Register
+            Login
           </button>
         </div>
       </form>
@@ -104,4 +81,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
