@@ -59,10 +59,10 @@ before:animate-typewriter
           {loading ? (
             <div>Loading...</div>
           ) : (
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 mb-7">
               {posts?.map((post) => (
                 <div
-                  className="cursor-pointer bg-white shadow-md rounded-lg overflow-hidden w-80 h-auto hover:shadow-lg transition duration-300"
+                  className="cursor-pointer   overflow-hidden w-80"
                   key={post.id}
                   onClick={() => handlePostClick(post.id)}
                 >

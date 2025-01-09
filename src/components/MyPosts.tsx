@@ -38,7 +38,22 @@ const MyPosts = () => {
     if (session && session.user) {
       fetchPosts(session.user.id); //
     }
-  }, [session, session.user]);
+  }, [session]);
+
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(`/api/post/deletePost/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response) {
+        alert("Post deleted successfully!");
+        setPosts(posts.filter((post) => post.id !== id));
+      }
+    } catch (err) {
+      console.error("Error during login:", err);
+    }
+  };
   return (
     <div>
       <Navbar />
@@ -47,14 +62,30 @@ const MyPosts = () => {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-4">
             {posts?.map((post) => (
               <div
-                className="cursor-pointer bg-white shadow-md rounded-lg overflow-hidden w-80 h-auto hover:shadow-lg transition duration-300"
                 key={post.id}
-                onClick={() => handlePostClick(post.id)}
+                className=" bg-white shadow-md rounded-lg   w-80 max-h-[300px] flex flex-col items-center cursor-pointer hover:shadow-lg transition duration-300"
               >
-                <PostCard title={post.title} content={post.content} />
+                <div
+                  className="overflow-y-auto flex flex-col items-center p-4"
+                  onClick={() => handlePostClick(post.id)}
+                >
+                  <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
+                  <p className="text-gray-700 text-sm text-center">
+                    {post.content}
+                  </p>
+                </div>
+
+                <button
+                  onClick={(e) => {
+                    handleDelete(post.id);
+                  }}
+                  className=" bg-red-500 text-white my-2 px-2 py-1 rounded hover:bg-red-600"
+                >
+                  Delete
+                </button>
               </div>
             ))}
           </div>
