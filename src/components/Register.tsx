@@ -97,9 +97,14 @@ const Register = () => {
           </div>
           <button
             type="submit"
-            className="p-2 rounded-xl bg-blue-300 my-4 hover:bg-blue-500"
+            className={`p-2 rounded-xl my-4 ${
+              loading
+                ? "bg-blue-500 cursor-not-allowed"
+                : "bg-blue-300 hover:bg-blue-500"
+            }`}
+            disabled={loading}
           >
-            Register
+            {loading ? "Loading.." : "Register"}
           </button>
         </div>
         <span>
@@ -108,6 +113,7 @@ const Register = () => {
             Here
           </a>
         </span>
+        {error != null ? <p className="text-red-500 font-bold">{error}</p> : ""}
       </form>
     </div>
   );

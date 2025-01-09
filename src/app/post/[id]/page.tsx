@@ -1,10 +1,9 @@
 "use client";
 import Post from "@/components/post";
 import { useParams } from "next/navigation";
-import { useRouter } from "next/router";
 import React from "react";
 
-const page = () => {
+const Page = () => {
   const { id } = useParams();
   return (
     <div>
@@ -13,4 +12,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

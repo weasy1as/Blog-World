@@ -1,6 +1,4 @@
-import { hash } from "crypto";
 import NextAuth from "next-auth";
-import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import { compare } from "bcrypt";
@@ -19,7 +17,7 @@ export const authOptions = {
         username: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         console.log("Username:", credentials.username); // Debug line
         console.log("Password:", credentials.password); // Debug lin
         const { username, password } = credentials;

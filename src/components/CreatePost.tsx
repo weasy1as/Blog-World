@@ -1,7 +1,6 @@
 "use client";
 import React, { FormEvent, useState } from "react";
 import Navbar from "./Navbar";
-import { title } from "node:process";
 import { useSession } from "next-auth/react";
 
 const CreatePost = () => {

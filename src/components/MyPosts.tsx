@@ -38,7 +38,7 @@ const MyPosts = () => {
     if (session && session.user) {
       fetchPosts(session.user.id); //
     }
-  }, [session]);
+  }, [session, session.user]);
   return (
     <div>
       <Navbar />

@@ -29,16 +29,20 @@ const Post = ({ postId }) => {
   };
 
   useEffect(() => {
-    if (session && session.user) {
+    if (session && postId) {
       fetchPosts(postId); //
     }
-  }, [session]);
+  }, [postId]);
   return (
     <div>
       <Navbar />
-      <div className="flex justify-center items-center mt-[100px]">
-        <PostCard title={post?.title} content={post?.content} />
-      </div>
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <div className="flex justify-center items-center mt-[100px]">
+          <PostCard title={post?.title} content={post?.content} />
+        </div>
+      )}
     </div>
   );
 };

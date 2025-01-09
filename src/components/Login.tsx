@@ -1,5 +1,4 @@
 "use client";
-import { sign } from "crypto";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
@@ -29,8 +28,7 @@ const Login = () => {
 
       console.log(signinData);
       if (signinData?.error) {
-        setError(signinData.error);
-        alert("Login wrong!" + signinData.error);
+        setError("Wrong credentials");
       } else {
         router.push("/");
         router.refresh();
@@ -41,6 +39,7 @@ const Login = () => {
       setError("An error occurred. Please try again.");
     } finally {
       setLoading(false);
+      setError(null);
     }
   };
 
@@ -73,8 +72,18 @@ const Login = () => {
               placeholder="password"
             />
           </div>
-          <button type="submit" className="p-2 rounded-xl bg-blue-300 mb-4">
-            Login
+
+          <button type="submit">{loading ? "Loading.." : "Create Post"}</button>
+          <button
+            type="submit"
+            className={`p-2 rounded-xl mb-4 ${
+              loading
+                ? "bg-blue-500 cursor-not-allowed"
+                : "bg-blue-300 hover:bg-blue-500"
+            }`}
+            disabled={loading}
+          >
+            {loading ? "Loggin in.." : "Login"}
           </button>
         </div>
         <span>
@@ -83,6 +92,7 @@ const Login = () => {
             Here
           </a>
         </span>
+        {error != null ? <p className="text-red-500 font-bold">{error}</p> : ""}
       </form>
     </div>
   );

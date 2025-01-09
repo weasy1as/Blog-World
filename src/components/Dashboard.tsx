@@ -1,5 +1,5 @@
 "use client";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import PostCard from "./PostCard";
@@ -56,17 +56,21 @@ before:animate-typewriter
 
         <div className="flex flex-col justify-center items-center">
           <h2 className="font-bold text-2xl text-gray-700 mb-6">See Posts</h2>
-          <div className="flex flex-wrap gap-4">
-            {posts?.map((post) => (
-              <div
-                className="cursor-pointer bg-white shadow-md rounded-lg overflow-hidden w-80 h-auto hover:shadow-lg transition duration-300"
-                key={post.id}
-                onClick={() => handlePostClick(post.id)}
-              >
-                <PostCard title={post.title} content={post.content} />
-              </div>
-            ))}
-          </div>
+          {loading ? (
+            <div>Loading...</div>
+          ) : (
+            <div className="flex flex-wrap gap-4">
+              {posts?.map((post) => (
+                <div
+                  className="cursor-pointer bg-white shadow-md rounded-lg overflow-hidden w-80 h-auto hover:shadow-lg transition duration-300"
+                  key={post.id}
+                  onClick={() => handlePostClick(post.id)}
+                >
+                  <PostCard title={post.title} content={post.content} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

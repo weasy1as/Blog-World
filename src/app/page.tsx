@@ -1,7 +1,6 @@
 "use client";
 import Dashboard from "@/components/Dashboard";
-import { signIn, useSession } from "next-auth/react";
-import Image from "next/image";
+import { useSession } from "next-auth/react";
 import Unauthorized from "@/components/unauthorized";
 
 export default function Home() {

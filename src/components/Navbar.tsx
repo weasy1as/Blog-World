@@ -1,4 +1,5 @@
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 import React from "react";
 import { TbWorldSearch } from "react-icons/tb";
 const Navbar = () => {
@@ -6,26 +7,26 @@ const Navbar = () => {
     <div className="bg-blue-300 flex justify-between p-3">
       <div className="flex justify-center items-center gap-5">
         <TbWorldSearch size={50} />
-        <a href="/" className="text-xl font-bold">
+        <Link href="/" className="text-xl font-bold">
           Blog World
-        </a>
+        </Link>
       </div>
       <div>
         <ul className="flex gap-4 font-bold justify-center items-center text-[18px]">
           <li>
-            <a className="hover:underline" href="/">
+            <Link className="hover:underline" href="/">
               Home
-            </a>
+            </Link>
           </li>
           <li>
-            <a className="hover:underline" href="/createPost">
+            <Link className="hover:underline" href="/createPost">
               Create post
-            </a>
+            </Link>
           </li>
           <li>
-            <a className="hover:underline" href="/myPosts">
+            <Link className="hover:underline" href="/myPosts">
               My posts
-            </a>
+            </Link>
           </li>
           <li>
             {" "}
