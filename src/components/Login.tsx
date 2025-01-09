@@ -77,6 +77,12 @@ const Login = () => {
             Login
           </button>
         </div>
+        <span>
+          Not registered yet? Register {""}
+          <a className="underline text-blue-500" href="/register">
+            Here
+          </a>
+        </span>
       </form>
     </div>
   );

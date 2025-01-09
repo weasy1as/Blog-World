@@ -40,21 +40,26 @@ const Dashboard = () => {
     }
   }, [session]);
   return (
-    <div>
+    <div className="min-h-screen  bg-gray-100">
       <Navbar />
-      <div className="pb-[80px]">
+      <div className="">
         <div className="p-[100px]">
-          <h1 className="text-[60px] font-bold">
+          <h1
+            className="relative w-[max-content] font-mono
+before:absolute before:inset-0 before:bg-gray-100 text-[70px] font-bold
+before:animate-typewriter
+"
+          >
             Welcome back, {session?.user?.name}!
           </h1>
         </div>
 
         <div className="flex flex-col justify-center items-center">
-          <h1 className="font-bold text-2xl mb-6">see posts</h1>
-          <div className="flex flex-wrap gap-2">
+          <h2 className="font-bold text-2xl text-gray-700 mb-6">See Posts</h2>
+          <div className="flex flex-wrap gap-4">
             {posts?.map((post) => (
               <div
-                className=" cursor-pointer"
+                className="cursor-pointer bg-white shadow-md rounded-lg overflow-hidden w-80 h-auto hover:shadow-lg transition duration-300"
                 key={post.id}
                 onClick={() => handlePostClick(post.id)}
               >

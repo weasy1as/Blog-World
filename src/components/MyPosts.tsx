@@ -3,11 +3,17 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import PostCard from "./PostCard";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const MyPosts = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
+  const router = useRouter();
+
+  const handlePostClick = (id: number) => {
+    router.push(`/post/${id}`);
+  };
 
   const fetchPosts = async (userId: number) => {
     try {
@@ -43,11 +49,13 @@ const MyPosts = () => {
         ) : (
           <div className="flex flex-wrap gap-2">
             {posts?.map((post) => (
-              <PostCard
+              <div
+                className="cursor-pointer bg-white shadow-md rounded-lg overflow-hidden w-80 h-auto hover:shadow-lg transition duration-300"
                 key={post.id}
-                title={post.title}
-                content={post.content}
-              />
+                onClick={() => handlePostClick(post.id)}
+              >
+                <PostCard title={post.title} content={post.content} />
+              </div>
             ))}
           </div>
         )}

@@ -50,11 +50,11 @@ const Register = () => {
   return (
     <div className="bg-black flex justify-center items-center w-full h-screen">
       <form
-        className="bg-white w-[30%] h-[70%] flex flex-col justify-between items-center gap-3 text-bold rounded-xl"
+        className="bg-white w-[30%] h-[70%] flex flex-col justify-between items-center gap-3 text-bold rounded-xl pb-4"
         onSubmit={handleSubmit}
       >
         <h1 className="mt-4 font-extrabold">Register</h1>
-        <div>
+        <div className="flex flex-col justify-center">
           <div className="flex flex-col gap-2 items-center">
             <label htmlFor="">Name</label>{" "}
             <input
@@ -95,10 +95,19 @@ const Register = () => {
               placeholder="password"
             />
           </div>
-          <button type="submit" className="p-2 rounded-xl bg-blue-300 mb-4">
+          <button
+            type="submit"
+            className="p-2 rounded-xl bg-blue-300 my-4 hover:bg-blue-500"
+          >
             Register
           </button>
         </div>
+        <span>
+          Already have an account? Login {""}
+          <a className="underline text-blue-500" href="/login">
+            Here
+          </a>
+        </span>
       </form>
     </div>
   );
