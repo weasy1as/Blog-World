@@ -12,7 +12,7 @@ const MyPosts = () => {
   const fetchPosts = async (userId: number) => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/post/${userId}`);
+      const response = await fetch(`/api/post/userPost/${userId}`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch posts");
