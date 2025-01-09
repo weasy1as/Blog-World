@@ -32,7 +32,6 @@ const Login = () => {
       } else {
         router.push("/");
         router.refresh();
-        alert("Login successful!");
       }
     } catch (err) {
       console.error("Error during login:", err);
@@ -72,8 +71,6 @@ const Login = () => {
               placeholder="password"
             />
           </div>
-
-          <button type="submit">{loading ? "Loading.." : "Create Post"}</button>
           <button
             type="submit"
             className={`p-2 rounded-xl mb-4 ${
