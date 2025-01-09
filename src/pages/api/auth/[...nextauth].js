@@ -66,6 +66,19 @@ export const authOptions = {
   session: {
     strategy: "jwt",
   },
+  callbacks: {
+    async session({ session, token }) {
+      // Attach user ID to the session object
+      session.user.id = token.id;
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+  },
 
   secret: process.env.NEXTAUTH_SECRET,
 };
