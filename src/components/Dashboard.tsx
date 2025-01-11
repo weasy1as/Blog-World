@@ -5,9 +5,14 @@ import Navbar from "./Navbar";
 import PostCard from "./PostCard";
 import { useRouter } from "next/navigation";
 
+type posts = {
+  id: number;
+  title: string;
+  content: string;
+};
 const Dashboard = () => {
   const { data: session } = useSession();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<posts[]>();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -15,26 +20,24 @@ const Dashboard = () => {
     router.push(`/post/${id}`);
   };
 
-  const fetchPosts = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`/api/post/posts`);
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch posts");
-      }
-
-      const data = await response.json();
-      setPosts(data.posts);
-      console.log(posts);
-    } catch (error) {
-      alert(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/post/posts`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch posts");
+        }
+
+        const data = await response.json();
+        setPosts(data.posts);
+      } catch (error) {
+        alert(error);
+      } finally {
+        setLoading(false);
+      }
+    };
     if (session && session.user) {
       fetchPosts(); //
     }
@@ -57,12 +60,12 @@ before:animate-typewriter
         <div className="flex flex-col justify-center items-center">
           <h2 className="font-bold text-2xl text-gray-700 mb-6">See Posts</h2>
           {loading ? (
-            <div>Loading...</div>
+            <div className="text-gray-500">Loading...</div>
           ) : (
-            <div className="flex flex-wrap gap-4 mb-7">
+            <div className="grid  grid-cols-4 gap-6">
               {posts?.map((post) => (
                 <div
-                  className="cursor-pointer   overflow-hidden w-80"
+                  className="cursor-pointer"
                   key={post.id}
                   onClick={() => handlePostClick(post.id)}
                 >

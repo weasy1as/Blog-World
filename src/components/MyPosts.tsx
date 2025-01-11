@@ -1,12 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
-import PostCard from "./PostCard";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
+type posts = {
+  id: number;
+  title: string;
+  content: string;
+};
 const MyPosts = () => {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<posts[]>();
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
@@ -15,26 +19,24 @@ const MyPosts = () => {
     router.push(`/post/${id}`);
   };
 
-  const fetchPosts = async (userId: number) => {
-    try {
-      setLoading(true);
-      const response = await fetch(`/api/post/userPost/${userId}`);
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch posts");
-      }
-
-      const data = await response.json();
-      setPosts(data.posts);
-      console.log(posts);
-    } catch (error) {
-      alert(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchPosts = async (userId: number) => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/post/userPost/${userId}`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch posts");
+        }
+
+        const data = await response.json();
+        setPosts(data.posts);
+      } catch (error) {
+        alert(error);
+      } finally {
+        setLoading(false);
+      }
+    };
     if (session && session.user) {
       fetchPosts(session.user.id); //
     }
@@ -48,7 +50,7 @@ const MyPosts = () => {
 
       if (response) {
         alert("Post deleted successfully!");
-        setPosts(posts.filter((post) => post.id !== id));
+        setPosts(posts?.filter((post) => post.id !== id));
       }
     } catch (err) {
       console.error("Error during login:", err);
@@ -79,7 +81,7 @@ const MyPosts = () => {
                 </div>
 
                 <button
-                  onClick={(e) => {
+                  onClick={() => {
                     handleDelete(post.id);
                   }}
                   className=" bg-red-500 text-white my-2 px-2 py-1 rounded hover:bg-red-600"

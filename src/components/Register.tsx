@@ -8,6 +8,7 @@ const Register = () => {
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const data = {
       name: formData.get("name"),
@@ -16,6 +17,11 @@ const Register = () => {
       password: formData.get("password"),
     };
 
+    if (!data.name || !data.username || !data.email || !data.password) {
+      setError("All fields are required.");
+      setLoading(false);
+      return;
+    }
     try {
       setLoading(true);
       setError(null);
@@ -79,7 +85,7 @@ const Register = () => {
             <label htmlFor="">Email</label>{" "}
             <input
               className="border-2 border-black rounded-xl text-center"
-              type="text"
+              type="email"
               name="email"
               id=""
               placeholder="email"

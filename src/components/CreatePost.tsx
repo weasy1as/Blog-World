@@ -13,6 +13,7 @@ const CreatePost = () => {
     e.preventDefault();
     setLoading(true);
 
+    const form = e.currentTarget;
     const formData = new FormData(e.currentTarget);
     const data = {
       title: formData.get("title"),
@@ -44,6 +45,7 @@ const CreatePost = () => {
 
       if (response) {
         alert("Post created successfully!");
+        form.reset();
       }
       setError(null);
     } catch (err) {
