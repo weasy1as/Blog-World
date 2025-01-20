@@ -43,7 +43,7 @@ const Post = ({ postId }: { postId: number }) => {
         <div>Loading...</div>
       ) : (
         <div className="flex justify-center items-center mt-[100px]">
-          <PostCard title={post!.title} content={post!.content} />
+          <PostCard title={post?.title} content={post?.content} />
         </div>
       )}
     </div>
