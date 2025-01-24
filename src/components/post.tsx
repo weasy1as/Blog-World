@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import PostCard from "./PostCard";
 import { useSession } from "next-auth/react";
 import Navbar from "./Navbar";
+import Unauthorized from "@/components/unauthorized";
 
 type post = {
   id: number;
@@ -36,6 +37,9 @@ const Post = ({ postId }: { postId: number }) => {
       fetchPosts(postId); //
     }
   }, [session, postId]);
+  if (!session) {
+    <Unauthorized />;
+  }
   return (
     <div>
       <Navbar />

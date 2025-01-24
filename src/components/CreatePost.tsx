@@ -2,6 +2,7 @@
 import React, { FormEvent, useState } from "react";
 import Navbar from "./Navbar";
 import { useSession } from "next-auth/react";
+import Unauthorized from "@/components/unauthorized";
 
 const CreatePost = () => {
   const { data: session } = useSession();
@@ -55,6 +56,7 @@ const CreatePost = () => {
       setLoading(false);
     }
   };
+
   return (
     <div>
       <Navbar />

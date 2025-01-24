@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Unauthorized from "@/components/unauthorized";
 
 type posts = {
   id: number;
@@ -56,6 +57,9 @@ const MyPosts = () => {
       console.error("Error during login:", err);
     }
   };
+  if (!session) {
+    return <Unauthorized />;
+  }
   return (
     <div>
       <Navbar />
